@@ -1,0 +1,61 @@
+Current plan in short:
+
+Clients itinerary = {Summary: summary, Details: details}
+
+summary = [X, Y, Z] (a list of dictionaries)
+    X = {city:'...', country: '...'}
+    Y = {city:'...', country: '...'}
+    Z = {city:'...', country: '...'}
+
+details = { A,B,C,D,E,F }
+    A - F = name: { activity_name: '...', 24time_on_itinerary: '...', 
+                duration_activity: '...', booking_time: '...', activity_index: '...',
+                country: '...', date: '...'
+            }
+
+# Will convert clients itinerary details to expanded itinerary from backened by appending new things
+# and converting details from a dictionary to a list
+
+expandedItinerary.informative_itinerary = { A,B,C,D,E,F }
+    A - F = activity_name: { activity_name: '...', 24time_on_itinerary: '...', duration_activity: '...', booking_time: '...', activity_index: '...', country: '...', date: '...', recommended_time: '...', rank_on_tripadvisor: '...', passes: '...', opening_hours:'...', free_days: '...', human_trafic_peak_timing: '...', activity_cluster: '...', longtitude: '...', lattitude: '...' }
+
+# Then will carry on doing the checks on the expanded itinerary.
+# Changes will be checked and stored in a suggestion object.
+# Assume only A B C D has changes
+
+Schema for SuggestionStore will be the following:
+    {   A: [ (suggestion_type, suggestion, message, constraint_type), (suggestion_type, suggestion, message, constraint_type), 
+             (suggestion_type, suggestion, message, constraint_type) ]
+        B: [ (suggestion_type, suggestion, message, constraint_type), (suggestion_type, suggestion, message, constraint_type), 
+             (suggestion_type, suggestion, message, constraint_type) ]
+        C: [ (suggestion_type, suggestion, message, constraint_type), (suggestion_type, suggestion, message, constraint_type), 
+             (suggestion_type, suggestion, message, constraint_type) ]
+    }
+    SuggestionStore = { A:___, B:___, C:___ } where ABC are names of the activity
+
+// SuggestionStore tuples Schema:
+
+Types of suggestions:
+ADD location_name TO DAY xx,
+ADD location_name, 
+REMOVE location_name FROM DAY xx, 
+SHIFT DAY location_name FROM DAY xx TO DAY yy, 
+SHIFT TIME location_name FROM TIME xx TO TIME yy
+
+# suggestion and constraint_type will be appended back to DETAILS as key value pairs.
+# New activity index will be the index which will be read by the client side. 
+# The activity index basically is the order of the attractions in the list
+# CLient side will use new_activity_index as the order first.
+# On the itinerary editor, client will either click to accept changes or not. If yes, activity type == new_activity_type.
+# If not, new_activity_type will be removed and all the suggestions will be removed as well.
+# SUggestion will maybe have multiple keys inside. can display a message etc as well.
+
+UPDATED details = { A,B,C,D,E,F }
+
+    Only A - D was changed.
+    A - D SCHEMA:
+    activity_name: { activity_name: '...', 24time_on_itinerary: '...', duration_activity: '...', booking_time: '...', activity_index: '...', suggestion: '...', constraint_type: '...', NEW_ACTIVITY_INDEX: '...' }
+
+    # E and F has no changes.
+    E - F SCHEMA:
+    activity_name: { activity_name: '...', 24time_on_itinerary: '...', duration_activity: '...', booking_time: '...', activity_index: '...'}  

@@ -1,0 +1,133 @@
+Clients itinerary = {Summary: summary, Details: details}
+
+summary = [X, Y, Z] #a list of dictionaries
+    X = {City:'...', Country: '...'}
+    Y = {City:'...', Country: '...'}
+    Z = {City:'...', Country: '...'}
+
+details = { A,B,C,D,E,F }
+    A - F = activity_name: { activity_name: '...', 24time_on_itinerary: '...', 
+                duration_activity: '...', booking_time: '...', activity_index: '...',
+                Country: '...'
+            }
+
+informative_itinerary (expanded form of details) = { A,B,C,D,E,F }
+    all keys will be in snake case and not capitalized
+    A - F = activity_name: { 
+        activity_name: '...', 
+        24time_on_itinerary: '...', 
+        duration_activity: '...', 
+        booking_time: '...', 
+        activity_index: '...',
+        country: '...',
+        date: '...',
+
+        activity_type: '...',
+        geometry: '...',
+        opening_hours: '...',
+        phone_number: '...',
+        website: '...',
+
+        }
+
+
+SCHEMA OF INDIVIDUAL COMPONENTS
+
+summary = [ { City:'...', Country: '...' }, { City:'...', Country: '...' }, ... ]
+summary e.g = [ { City:'Naples', Country: 'Italy' }, ... ]
+
+City: 
+    string
+    first letter caps
+    City e.g: 'Naples'
+
+Country: 
+    string
+    first letter caps
+    Country e.g: 'Italy'
+
+
+informative_itinerary (expanded form of details) = { A,B,C,D,E,F }
+
+activity_name:
+    string
+    capitalized according to the name
+    e.g: 'Gardens by the Bay', "Singapore Botanic Gardens"
+
+24time_on_itinerary:
+    string
+    in for the form of "24htime - 24htime"
+    e.g: '2200 - 2330', '0900 - 1200'
+
+duration_activity:
+    integer
+    will be equal to the number of minutes
+    e.g: 120, 180, 90
+
+booking_time:
+    string
+    equivalent to the booking start time in 24h time notation
+    e.g: '1300', '1800'
+
+activity_index:
+    integer
+    represents the order of the current activity in the list of activities.
+    If the index is 1, the activity would be the second in the list.
+    e.g: 0, 3, 10, 50
+
+country: 
+    string
+    first letter caps
+    Country e.g: 'Italy'Country:
+
+date:
+    string
+    in the form yyyy-mm-dd
+    represents date of the particular activity
+    e.g: '2020-04-30', '2018-12-26'
+
+
+(These are all keys pulled from backend)
+Activity_type:
+    list of strings
+    the strings represents what kind of activity it is
+    e.g: [ 'Observation Decks & Towers', 'Tourist_attraction', 'Point_of_interest' ]
+
+Geometry:
+    dictionary
+    in the form of { 
+        location: {lat: '...', lng: '...'}, 
+        viewport: {northeast: {lat: '...', lng: '...'}, southwest: {lat: '...', lng: '...'} } 
+        }
+    location is contains the exact lat and long of the activity
+    viewport is the recommended boundary box of google maps to be displayed to the client
+    when they are searching for the location. northeast and southwest contains the top right and 
+    bottom left boundaries for the imaginary border box in terms of lat and long.
+
+    keys will be in strings. lat and long will be as floats
+    e.g 'location': { 'lat': 1.291053980291502, 'lng': 103.8643513302915 }
+
+
+Opening_hours:
+    Array/list, string, None
+
+    if None, the activity has no opening hours. If just a string titled: 'Temporarily closed', 
+    it is closed for now. If array/list, it will be in the form ['Monday: xx', 'Tuesday: xx', ... ]
+    till Sunday
+
+    each day in the array/list will be in the form of 'day: time - time' 
+    day will be capitalized, time will be in 12h notation with AM/PM after the digits with a space
+    in the middle
+
+    e.g: "Monday: 5:00 AM – 2:00 AM", "Friday: 5:00 PM – 12:00 AM"    
+
+Phone_number:
+    string
+    in the form of "+countrycode number"
+    e.g "+65 6332 6359", "+65 1800 471 7300"
+
+Website:
+    string or None
+    e.g: "http://nationalmuseum.sg/", "https://www.jewelchangiairport.com/"
+
+
